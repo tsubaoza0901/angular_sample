@@ -1,0 +1,14 @@
+version: '3.3'
+
+services:
+  node:
+    build:
+        context: ./docker_files/node
+    container_name: angular-sample
+    volumes:
+      - ./front:/var/www
+    ports:
+      - '4200:4200'
+    tty: true
+    environment:
+      - NODE_ENV=development
