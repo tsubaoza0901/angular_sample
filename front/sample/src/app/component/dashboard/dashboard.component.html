@@ -1,0 +1,13 @@
+<h2>Top AWS Products</h2>
+<div class="aws-products-menu">
+  <a
+    *ngFor="let awsProduct of awsProducts"
+    routerLink="/detail/{{ awsProduct.id }}"
+  >
+    <div>
+      {{ awsProduct.name }}
+    </div>
+  </a>
+</div>
+
+<app-aws-product-search></app-aws-product-search>

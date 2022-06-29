@@ -1,0 +1,12 @@
+<div id="search-component">
+  <label for="search-box">AWS Product Search</label>
+  <input #searchBox id="search-box" (input)="search(searchBox.value)" />
+
+  <ul class="search-result">
+    <li *ngFor="let awsProduct of awsProducts$ | async">
+      <a routerLink="/detail/{{ awsProduct.id }}">
+        {{ awsProduct.name }}
+      </a>
+    </li>
+  </ul>
+</div>

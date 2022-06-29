@@ -1,0 +1,15 @@
+<div *ngIf="awsProduct">
+    <h2>{{ awsProduct.name | uppercase }}</h2>
+    <div>プロダクトID: {{ awsProduct.id }}</div>
+    <div>
+      <label for="aws-product-name">プロダクト名: </label>
+      <input
+        id="aws-product-name"
+        [(ngModel)]="awsProduct.name"
+        placeholder="name"
+      />
+    </div>
+    <button type="button" (click)="goBack()">go back</button>
+    <button type="button" (click)="save()">save</button>
+  </div>
+  

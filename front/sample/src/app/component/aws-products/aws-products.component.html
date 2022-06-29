@@ -1,0 +1,21 @@
+<h2>AWS サービス一覧</h2>
+
+<div>
+  <label for="new-aws-product">AWS Product name: </label>
+  <input id="new-aws-product" #awsProductName />
+
+  <!-- (click) 入力値をadd()に渡したあと、入力をクリアする -->
+  <button type="button" class="add-button" (click)="add(awsProductName.value); awsProductName.value=''">
+    Add AWS Product
+  </button>
+</div>
+
+<ul class="aws-products">
+  <li *ngFor="let awsProduct of awsProducts">
+    <a routerLink="/detail/{[awsProduct.id}]}">
+    <span>{{ awsProduct.id }}</span
+    >{{ awsProduct.name }}
+    </a>
+    <button type="button" class="delete" title="delete awsProduct" (click)="delete(awsProduct)">x</button>
+  </li>
+</ul>
