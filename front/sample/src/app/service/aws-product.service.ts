@@ -75,7 +75,7 @@ export class AwsProductsService {
       );
   }
 
-  /** HeroServiceのメッセージをMessageServiceを使って記録 */
+  /** AwsProductServiceのメッセージをMessageServiceを使って記録 */
   private log(message: string) {
     this.messageService.add(`AwsProductService: ${message}`);
   }

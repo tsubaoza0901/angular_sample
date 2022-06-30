@@ -21,11 +21,11 @@ export class InMemoryDataService implements InMemoryDbService {
     return { awsProducts };
   }
 
-  // Overrides the genId method to ensure that a hero always has an id.
-  // If the heroes array is empty,
+  // Overrides the genId method to ensure that a awsProduct always has an id.
+  // If the awsProducts array is empty,
   // the method below returns the initial number (11).
-  // if the heroes array is not empty, the method below returns the highest
-  // hero id + 1.
+  // if the awsProducts array is not empty, the method below returns the highest
+  // awsProduct id + 1.
   genId(awsProducts: AwsProduct[]): number {
     return awsProducts.length > 0
       ? Math.max(...awsProducts.map((awsProduct) => awsProduct.id)) + 1
