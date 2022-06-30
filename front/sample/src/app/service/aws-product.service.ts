@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { AWS_PRODUCT } from '../model/aws-product';
+import { AwsProduct } from '../model/aws-product';
 import { MessageService } from './message.service';
 import { AWS_PRODUCTS } from './mock-data/mock-aws-products';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -19,22 +19,22 @@ export class AwsProductsService {
     private messageService: MessageService
   ) {}
 
-  getAwsProducts(): Observable<AWS_PRODUCT[]> {
-    return this.http.get<AWS_PRODUCT[]>(this.awsProductsUrl).pipe(
+  getAwsProducts(): Observable<AwsProduct[]> {
+    return this.http.get<AwsProduct[]>(this.awsProductsUrl).pipe(
       tap((awsProducts) => this.log('fetched awsProducts')),
-      catchError(this.handleError<AWS_PRODUCT[]>('getAwsProducts', []))
+      catchError(this.handleError<AwsProduct[]>('getAwsProducts', []))
     );
   }
 
-  getAwsProduct(id: number): Observable<AWS_PRODUCT> {
+  getAwsProduct(id: number): Observable<AwsProduct> {
     const url = `${this.awsProductsUrl}/${id}`;
-    return this.http.get<AWS_PRODUCT>(url).pipe(
+    return this.http.get<AwsProduct>(url).pipe(
       tap((_) => this.log(`fetched awsProduct id=${id}`)),
-      catchError(this.handleError<AWS_PRODUCT>(`getAwsProduct id=${id}`))
+      catchError(this.handleError<AwsProduct>(`getAwsProduct id=${id}`))
     );
   }
 
-  updateAwsProduct(awsProduct: AWS_PRODUCT): Observable<any> {
+  updateAwsProduct(awsProduct: AwsProduct): Observable<any> {
     return this.http
       .put(this.awsProductsUrl, awsProduct, this.httpOptions)
       .pipe(
@@ -43,35 +43,35 @@ export class AwsProductsService {
       );
   }
 
-  addAwsProduct(awsProduct: AWS_PRODUCT): Observable<AWS_PRODUCT> {
+  addAwsProduct(awsProduct: AwsProduct): Observable<AwsProduct> {
     return this.http
-      .post<AWS_PRODUCT>(this.awsProductsUrl, awsProduct, this.httpOptions)
+      .post<AwsProduct>(this.awsProductsUrl, awsProduct, this.httpOptions)
       .pipe(
-        tap((newAwsProduct: AWS_PRODUCT) =>
+        tap((newAwsProduct: AwsProduct) =>
           this.log(`added awsProduct w/ id=${newAwsProduct.id}`)
         ),
-        catchError(this.handleError<AWS_PRODUCT>('addAwsProduct'))
+        catchError(this.handleError<AwsProduct>('addAwsProduct'))
       );
   }
 
-  deleteAwsProduct(id: number): Observable<AWS_PRODUCT> {
+  deleteAwsProduct(id: number): Observable<AwsProduct> {
     const url = `${this.awsProductsUrl}/${id}`;
 
-    return this.http.delete<AWS_PRODUCT>(url, this.httpOptions).pipe(
+    return this.http.delete<AwsProduct>(url, this.httpOptions).pipe(
       tap((_) => this.log(`deleted awsProduct id=${id}`)),
-      catchError(this.handleError<AWS_PRODUCT>('deleteAwsProduct'))
+      catchError(this.handleError<AwsProduct>('deleteAwsProduct'))
     );
   }
 
-  searchAwsProducts(term: string): Observable<AWS_PRODUCT[]> {
+  searchAwsProducts(term: string): Observable<AwsProduct[]> {
     if (!term.trim()) {
       return of([]);
     }
     return this.http
-      .get<AWS_PRODUCT[]>(`${this.awsProductsUrl}/?name=${term}`)
+      .get<AwsProduct[]>(`${this.awsProductsUrl}/?name=${term}`)
       .pipe(
         tap((_) => this.log(`found awsProducts matching "${term}"`)),
-        catchError(this.handleError<AWS_PRODUCT[]>('searchAwsProducts', []))
+        catchError(this.handleError<AwsProduct[]>('searchAwsProducts', []))
       );
   }
 

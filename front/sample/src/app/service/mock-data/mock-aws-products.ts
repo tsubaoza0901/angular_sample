@@ -1,6 +1,6 @@
-import { AWS_PRODUCT } from '../../model/aws-product';
+import { AwsProduct } from '../../model/aws-product';
 
-export const AWS_PRODUCTS: AWS_PRODUCT[] = [
+export const AWS_PRODUCTS: AwsProduct[] = [
   { id: 1, name: 'Amazon EC2' },
   { id: 2, name: 'AWS Batch' },
   { id: 3, name: 'AWS Lambda' },

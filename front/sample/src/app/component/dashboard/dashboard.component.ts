@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AWS_PRODUCT } from '../../model/aws-product';
+import { AwsProduct } from '../../model/aws-product';
 import { AwsProductsService } from '../../service/aws-product.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { AwsProductsService } from '../../service/aws-product.service';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  awsProducts: AWS_PRODUCT[] = [];
+  awsProducts: AwsProduct[] = [];
 
   constructor(private awsProductsService: AwsProductsService) {}
 
@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
     this.awsProductsService
       .getAwsProducts()
       .subscribe(
-        (awsProducts: AWS_PRODUCT[]) =>
+        (awsProducts: AwsProduct[]) =>
           (this.awsProducts = awsProducts.slice(1, 5))
       );
   }

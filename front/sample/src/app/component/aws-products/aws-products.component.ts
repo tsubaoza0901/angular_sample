@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AWS_PRODUCTS } from 'src/app/service/mock-data/mock-aws-products';
-import { AWS_PRODUCT } from '../../model/aws-product';
+import { AwsProduct } from '../../model/aws-product';
 import { AwsProductsService } from '../../service/aws-product.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { AwsProductsService } from '../../service/aws-product.service';
   styleUrls: ['./aws-products.component.scss'],
 })
 export class AwsProductsComponent implements OnInit {
-  awsProducts: AWS_PRODUCT[] = [];
+  awsProducts: AwsProduct[] = [];
 
   constructor(private awsProductsService: AwsProductsService) {}
 
@@ -21,7 +21,7 @@ export class AwsProductsComponent implements OnInit {
     this.awsProductsService
       .getAwsProducts()
       .subscribe(
-        (awsProducts: AWS_PRODUCT[]) => (this.awsProducts = awsProducts)
+        (awsProducts: AwsProduct[]) => (this.awsProducts = awsProducts)
       );
   }
 
@@ -31,13 +31,13 @@ export class AwsProductsComponent implements OnInit {
       return;
     }
     this.awsProductsService
-      .addAwsProduct({ name } as AWS_PRODUCT)
-      .subscribe((awsProduct: AWS_PRODUCT) => {
+      .addAwsProduct({ name } as AwsProduct)
+      .subscribe((awsProduct: AwsProduct) => {
         this.awsProducts.push(awsProduct);
       });
   }
 
-  delete(awsProduct: AWS_PRODUCT): void {
+  delete(awsProduct: AwsProduct): void {
     this.awsProducts = this.awsProducts.filter((a) => a !== awsProduct);
     this.awsProductsService.deleteAwsProduct(awsProduct.id).subscribe();
   }

@@ -4,16 +4,16 @@ import { Observable, Subject } from 'rxjs';
 
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
-import { AWS_PRODUCT } from '../../model/aws-product';
+import { AwsProduct } from '../../model/aws-product';
 import { AwsProductsService } from '../../service/aws-product.service';
 
 @Component({
   selector: 'app-aws-product-search',
   templateUrl: './aws-product-search.component.html',
-  styleUrls: ['./aws-product-search.component.css'],
+  styleUrls: ['./aws-product-search.component.scss'],
 })
 export class AwsProductSearchComponent implements OnInit {
-  awsProducts$!: Observable<AWS_PRODUCT[]>;
+  awsProducts$!: Observable<AwsProduct[]>;
   private searchTerms = new Subject<string>();
 
   constructor(private awsProductsService: AwsProductsService) {}

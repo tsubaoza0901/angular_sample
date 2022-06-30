@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
-import { AWS_PRODUCT } from '../model/aws-product';
+import { AwsProduct } from '../model/aws-product';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +26,7 @@ export class InMemoryDataService implements InMemoryDbService {
   // the method below returns the initial number (11).
   // if the heroes array is not empty, the method below returns the highest
   // hero id + 1.
-  genId(awsProducts: AWS_PRODUCT[]): number {
+  genId(awsProducts: AwsProduct[]): number {
     return awsProducts.length > 0
       ? Math.max(...awsProducts.map((awsProduct) => awsProduct.id)) + 1
       : 11;

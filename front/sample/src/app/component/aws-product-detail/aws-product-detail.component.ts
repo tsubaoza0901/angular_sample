@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { AWS_PRODUCT } from '../../model/aws-product';
+import { AwsProduct } from '../../model/aws-product';
 import { AwsProductsService } from '../../service/aws-product.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { AwsProductsService } from '../../service/aws-product.service';
   styleUrls: ['./aws-product-detail.component.scss'],
 })
 export class AwsProductDetailComponent implements OnInit {
-  awsProduct: AWS_PRODUCT | undefined;
+  awsProduct: AwsProduct | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,7 +26,7 @@ export class AwsProductDetailComponent implements OnInit {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.awsProductsService
       .getAwsProduct(id)
-      .subscribe((awsProduct: AWS_PRODUCT) => (this.awsProduct = awsProduct));
+      .subscribe((awsProduct: AwsProduct) => (this.awsProduct = awsProduct));
   }
 
   goBack(): void {

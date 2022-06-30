@@ -1,4 +1,4 @@
-export interface AWS_PRODUCT {
+export interface AwsProduct {
   id: number;
   name: string;
 }
