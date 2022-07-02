@@ -1,9 +1,14 @@
 version: '3.3'
 
+volumes:
+  db-init:
+  db-data:
+
 services:
   node:
     build:
-        context: ./docker_files/node
+      context: ./docker_files/node
+      dockerfile: Dockerfile
     container_name: angular-sample
     volumes:
       - ./front:/var/www
@@ -12,3 +17,43 @@ services:
     tty: true
     environment:
       - NODE_ENV=development
+    networks:
+      - default
+  backend:
+    build:
+      context: ./docker_files/go
+      dockerfile: Dockerfile
+    container_name: angular-sample-backend
+    volumes:
+      - './backend:/go/src'
+    ports:
+      - '8858:8858'
+    env_file:
+      - ./backend/.env
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    tty: true
+    stdin_open: true
+    networks:
+      - default
+  db:
+    build:
+      context: ./docker_files/mysql
+      dockerfile: Dockerfile
+    container_name: angular-sample-db
+    restart: on-failure:5
+    ports:
+      - '3660:3306'
+    environment:
+      # 今回は勉強用のためセキュリティ無視で直書き
+      MYSQL_ROOT_PASSWORD: 'root'
+    tty: true
+    volumes:
+      - db-init:/docker-entrypoint-initdb.d
+      - db-data:/var/lib/mysql
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --skip-character-set-client-handshake
+    networks:
+      - default

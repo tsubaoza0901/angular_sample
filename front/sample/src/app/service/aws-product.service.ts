@@ -1,33 +1,40 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { AwsProduct } from '../model/aws-product';
 import { MessageService } from './message.service';
 import { AWS_PRODUCTS } from './mock-data/mock-aws-products';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
+import { HttpOptions } from './model/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AwsProductsService {
-  private awsProductsUrl = 'api/awsProducts'; // Web APIのURL ※'api/xxx'のxxxの部分は、InMemoryDataServiceのcreateDbで返却されるプロパティ名と一致する必要がある点に注意
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  private domain = "http://localhost:8858"
+  private awsProductsUrl = 'api/awsProducts'; // InMemory用。Web APIのURL ※'api/xxx'のxxxの部分は、InMemoryDataServiceのcreateDbで返却されるプロパティ名と一致する必要がある点に注意
+  private awsProductsApiUrl = 'api/aws_products'; // API用
+  httpOptions: HttpOptions = {
+    headers: new HttpHeaders({ 'Access-Control-Allow-Origin': '*','Content-Type': 'application/json' }),
   };
   constructor(
     private http: HttpClient,
     private messageService: MessageService
   ) {}
 
+  // ------------------------
+  // ① Component側でsubscribe()
   getAwsProducts(): Observable<AwsProduct[]> {
-    return this.http.get<AwsProduct[]>(this.awsProductsUrl).pipe(
+    return this.http.get<AwsProduct[]>(`${this.domain}/${this.awsProductsApiUrl}`).pipe(
+    // return this.http.get<AwsProduct[]>(this.awsProductsUrl).pipe(
       tap((awsProducts) => this.log('fetched awsProducts')),
       catchError(this.handleError<AwsProduct[]>('getAwsProducts', []))
     );
   }
 
   getAwsProduct(id: number): Observable<AwsProduct> {
-    const url = `${this.awsProductsUrl}/${id}`;
+    // const url = `${this.awsProductsUrl}/${id}`;
+    const url = `${this.domain}/${this.awsProductsApiUrl}/${id}`;
     return this.http.get<AwsProduct>(url).pipe(
       tap((_) => this.log(`fetched awsProduct id=${id}`)),
       catchError(this.handleError<AwsProduct>(`getAwsProduct id=${id}`))
@@ -74,6 +81,53 @@ export class AwsProductsService {
         catchError(this.handleError<AwsProduct[]>('searchAwsProducts', []))
       );
   }
+
+  // ------------------------
+  // // ② Component側でtoPromise()
+  // getAwsProduct(id: number): Observable<AwsProduct> {
+  //   const url = `${this.awsProductsUrl}/${id}`;
+  //   return this.sendRequest<any>('GE', url, this.httpOptions);
+  // }
+
+  // // 以下については汎用化しているだけなので、必ずしも必要はない
+  // private sendRequest<T>(
+  //   method: string,
+  //   path: string,
+  //   options: HttpOptions,
+  //   body?: any
+  // ): Observable<T> {
+  //   switch (method) {
+  //     case 'DELETE':
+  //       return this.http.delete<T>(path, options);
+  //     case 'GET':
+  //       return this.http.get<T>(path, options);
+  //     case 'POST':
+  //       return this.http.post<T>(path, body, options);
+  //     case 'PUT':
+  //       return this.http.put<T>(path, body, options);
+  //     default:
+  //       console.error(`Unsupported request: ${method}`);
+  //       return throwError(`Unsupported request: ${method}`);
+  //   }
+  // }
+
+  // ------------------------
+  // // ③ Service側でtoPromise()
+  // async getAwsProduct(id: number): Promise<AwsProduct | undefined> {
+  //   const url = `${this.awsProductsUrl}/${id}`;
+  //   return await this.http
+  //     .get<AwsProduct>(url)
+  //     .toPromise()
+  //     .then((awsProduct: any) => {
+  //       this.log(`fetched awsProduct id=${id}`);
+  //       return awsProduct;
+  //     })
+  //     .catch(() => {
+  //       this.handleError<AwsProduct>(`getAwsProduct id=${id}`);
+  //       return undefined;
+  //     });
+  // }
+  // ------------------------
 
   /** AwsProductServiceのメッセージをMessageServiceを使って記録 */
   private log(message: string) {
